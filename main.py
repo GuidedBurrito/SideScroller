@@ -1,7 +1,7 @@
 '''
-Created on Jun 20, 2013
-
-@author: Owner
+Name: Alex Valickis
+Date: June 20th 2013
+Purpose: Side scrolling video game
 '''
     
 import pygame, random
@@ -148,12 +148,13 @@ def game():
         hitAsteroids = pygame.sprite.spritecollide(ship, AsteroidSprites, False)
         if hitAsteroids:
             ship.sndCrash.play()
-            scoreboard.lives -= 20
+            scoreboard.lives -= 200
             if scoreboard.lives <= 0:
                 keepGoing = False
+                GameOver(scoreboard.score)
             for theAsteroid in hitAsteroids:
                 theAsteroid.reset()
-        
+                
         friendSprites.update()
         AsteroidSprites.update()
         scoreSprite.update()
@@ -229,6 +230,62 @@ def instructions(score):
     pygame.mouse.set_visible(True)
     return donePlaying
         
+def GameOver(score):
+    pygame.display.set_caption("G-ALEX-Y!")
+
+    ship = Ship()
+    background = Background()
+    
+    allSprites = pygame.sprite.Group(background, ship)
+    insFont = pygame.font.SysFont(None, 50)
+    insLabels = []
+    GameOverMessage = (
+    "                   GAME OVER",
+    "",
+    "",
+    "               Your Score: %d" % score ,
+    "",
+    "",
+    "",
+    "               Play Again? (Y/N)"
+    )
+    
+    for line in GameOverMessage:
+        tempLabel = insFont.render(line, 1, (255, 255, 0))
+        insLabels.append(tempLabel)
+ 
+    keepGoing = True
+    clock = pygame.time.Clock()
+    pygame.mouse.set_visible(False)
+    while keepGoing:
+        clock.tick(30)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                keepGoing = False
+                donePlaying = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_y:
+                    Scoreboard.score = 0
+                    keepGoing = False
+                    donePlaying = True
+                    Scoreboard.score = game()
+                elif  event.key == pygame.K_n:
+                    keepGoing = False
+                    donePlaying = True
+                    
+    
+        allSprites.update()
+        allSprites.draw(screen)
+
+        for i in range(len(insLabels)):
+            screen.blit(insLabels[i], (50, 30*i))
+
+        pygame.display.flip()
+        
+    ship.sndMusic.stop()    
+    pygame.mouse.set_visible(True)
+    return donePlaying
+
 def main():
     donePlaying = False
     score = 0
