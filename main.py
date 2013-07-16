@@ -207,6 +207,7 @@ def game():
             scoreboard.lives -= 20
             if scoreboard.lives <= 0:
                 keepGoing = False
+                ship.sndMusic.stop()    
                 GameOver(scoreboard.score)
             for theAsteroid in hitAsteroids:
                 theAsteroid.reset()
@@ -343,6 +344,7 @@ def GameOver(score):
                     Scoreboard.score = 0
                     keepGoing = False
                     donePlaying = True
+                    ship.sndMusic.stop()    
                     Scoreboard.score = game()
                 elif  event.key == pygame.K_n:
                     keepGoing = False
