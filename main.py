@@ -22,6 +22,7 @@ class Ship(pygame.sprite.Sprite):
             self.sndPickUp = pygame.mixer.Sound("PickUp.ogg")
             self.sndReload = pygame.mixer.Sound("Reload.ogg")
             self.sndThunder = pygame.mixer.Sound("Crash.ogg")
+            self.sndRocketFire = pygame.mixer.Sound("RocketFire.ogg")
             self.sndMusic = pygame.mixer.Sound("SpaceGameMusic.ogg")
             self.sndMusic.play(-1)
         
@@ -191,6 +192,7 @@ def game():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if scoreboard.missles >= 1:
                     laser.fire()
+                    ship.sndRocketFire.play()
                     scoreboard.missles -= 1
 
         
